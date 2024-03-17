@@ -8,14 +8,17 @@ import awsutil
 @click.command()
 @click.option('--stack-name', help='The stack name', prompt=True)
 @click.option('--output-key', help='The output key', prompt=True)
-def get_stack_output(stack_name, output_key):
-    click.echo(awsutil.get_stack_output(stack_name, output_key))
+@click.option('--region', help='The region', prompt=False, default=None)
+def get_stack_output(stack_name, output_key, region):
+    click.echo(awsutil.get_stack_output(stack_name, output_key, region))
 
 
 @click.command()
 @click.option('--stack-name', help='The stack name', prompt=True)
-def get_stack_outputs(stack_name):
-    click.echo(json.dumps(awsutil.get_stack_outputs(stack_name), indent=2))
+@click.option('--region', help='The region', prompt=False, default=None)
+def get_stack_outputs(stack_name, region):
+    click.echo(json.dumps(awsutil.get_stack_outputs(stack_name, region),
+                          indent=2))
 
 
 @click.command()

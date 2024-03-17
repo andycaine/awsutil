@@ -1,8 +1,13 @@
 import boto3
 
 
-def get_stack_output(stack_name, output_key):
-    cfn = boto3.client('cloudformation')
+def _cfn_client(region=None):
+    kwargs = region and {'region_name': region} or {}
+    return boto3.client('cloudformation', **kwargs)
+
+
+def get_stack_output(stack_name, output_key, region=None):
+    cfn = _cfn_client(region)
     response = cfn.describe_stacks(StackName=stack_name)
     stack = response['Stacks'][0]
     outputs = stack['Outputs']
@@ -12,8 +17,8 @@ def get_stack_output(stack_name, output_key):
     return None
 
 
-def get_stack_outputs(stack_name):
-    cfn = boto3.client('cloudformation')
+def get_stack_outputs(stack_name, region=None):
+    cfn = _cfn_client(region)
     response = cfn.describe_stacks(StackName=stack_name)
     stack = response['Stacks'][0]
     outputs = stack['Outputs']
